@@ -23,3 +23,15 @@ def create_profile(sender, instance, created, **kwargs):
         user_profile.follows.add(instance.profile)
         user_profile.save()
 
+
+class Post(models.Model):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='posts')
+    body = models.CharField(max_length=140)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return (
+            f"{self.user}"
+            f"({self.created_at:%Y-%m-%d %H:%M}):"
+            f"{self.body[:30]}..."
+        )
