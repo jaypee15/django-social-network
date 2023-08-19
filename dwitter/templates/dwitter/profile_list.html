@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<!-- 
 <div class="column">
 
 {% for profile in profiles %}
@@ -33,6 +33,56 @@
 
 {% endfor %}
 
-</div>
+</div> -->
+
+	
+
+
+
+
+		<section class="companies-info">
+			<div class="container">
+				<div class="company-title">
+					<h3>All Profiles</h3>
+				</div><!--company-title end-->
+                {% for profile in profiles %}
+				<div class="companies-list">
+					<div class="row">
+						<div class="col-lg-3 col-md-4 col-sm-6 col-12">
+							<div class="company_profile_info">
+								<div class="company-up-info">
+									<img src="{{profile.avatar.url}}" alt="">
+									<h3>{{profile.first_name | title}} {{profile.last_name | title}}</h3>
+                                    <small>@{{profile.user.username | lower}}</small>
+									<h4>{{profile.job_description}}</h4>
+									<ul>
+										<li><a href="#" title="" class="follow">Follow</a></li>
+										<li><a href="#" title="" class="message-us"><i class="fa fa-envelope"></i></a></li>
+										<li><a href="#" title="" class="hire-us">Hire</a></li>
+									</ul>
+								</div>
+								<a href="{% url 'profile' profile.id%}" title="" class="view-more-pro">View Profile</a>
+							</div><!--company_profile_info end-->
+						</div>
+					
+						
+					</div>
+				</div><!--companies-list end-->
+                {% endfor %}
+				<div class="process-comm">
+					<div class="spinner">
+						<div class="bounce1"></div>
+						<div class="bounce2"></div>
+						<div class="bounce3"></div>
+					</div>
+				</div><!--process-comm end-->
+			</div>
+		</section><!--companies-info end-->
+
+
+
+
+
+
 
 {% endblock content %}

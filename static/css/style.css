@@ -1069,6 +1069,11 @@ main {
 	-o-border-radius: 100px;
 	border-radius: 100px;
 	margin-top: 2px;
+    /* width:50px; */
+}
+.usy-dt > img:first-child {
+	
+    width:50px;
 }
 .ed-opts {
 	float: right;

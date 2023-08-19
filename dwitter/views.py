@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages
+# from django.contrib import messages
 from .models import Profile, Post
 from .forms import PostForm
 
@@ -10,7 +10,7 @@ def home(request):
             post = form.save(commit=False)
             post.user = request.user
             post.save()
-            messages.success(request, 'Your Post was created succesfully')
+            # messages.success(request, 'Your Post was created succesfully')
             return redirect('home')
     followed_posts = Post.objects.filter(
         user__profile__in=request.user.profile.follows.all()
@@ -20,7 +20,7 @@ def home(request):
         'form': form,
         'posts': followed_posts
     }
-    messages.error(request, 'correct the following errors')
+    # messages.error(request, 'correct the following errors')
     return render(request, 'dwitter/home.html', context)
 
 def profile_list(request):

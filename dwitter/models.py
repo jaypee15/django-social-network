@@ -3,19 +3,33 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from PIL import Image
-from django.utils import timezone
+from django_countries.fields import CountryField
+from djmoney.models.fields import MoneyField
+
 
 class Profile(models.Model):
+
+    JOB_TYPE_CHOICES = [
+        ("Full Time", "full time"),
+        ("Contract", "contract"),
+        ("Freelance", "freelance"),
+    ]
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255, null=True, blank=True)
     last_name = models.CharField(max_length=255, null=True, blank=True)
     bio = models.CharField(max_length=255, null=True, blank=True)
-    joined = models.DateTimeField(default=timezone.now()) #change to auto_now_add=True,
+    joined = models.DateTimeField(auto_now_add=True) 
     location = models.CharField(max_length=255, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
     website = models.CharField(max_length=255, null=True, blank=True)
     avatar = models.ImageField(default='avatar.jpg', upload_to='profile_avatars')
     cover_image = models.ImageField(default='', upload_to='cover_images')
+    title =models.CharField(default='', max_length=255)
+    job_description = models.CharField(max_length=255, default='')
+    job_type = models.CharField(max_length=20, choices=JOB_TYPE_CHOICES, default='Full Time')
+    rate = MoneyField(max_digits=14, decimal_places=2, default_currency='USD', default='20')
+    nationality = CountryField( null=True, blank=True) 
 
     follows = models.ManyToManyField(
         "self",
@@ -32,7 +46,8 @@ class Profile(models.Model):
 
         img = Image.open(self.avatar.path)
         if img.size or img.width > 300:
-            img.thumbnail(300, 300)
+            output_size = (300, 300)
+            img.thumbnail(output_size)
             img.save(self.avatar.path)
 
 @receiver(post_save, sender=User)
