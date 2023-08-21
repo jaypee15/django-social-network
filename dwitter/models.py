@@ -23,13 +23,15 @@ class Profile(models.Model):
     location = models.CharField(max_length=255, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
     website = models.CharField(max_length=255, null=True, blank=True)
-    avatar = models.ImageField(default='avatar.jpg', upload_to='profile_avatars')
-    cover_image = models.ImageField(default='', upload_to='cover_images')
+    avatar = models.ImageField(default='profile_avatars/avatar.jpg', upload_to='profile_avatars')
+    cover_image = models.ImageField(default='cover_images/wallpaperflare.com_wallpaper_1.jpg', upload_to='cover_images')
     title =models.CharField(default='', max_length=255)
     job_description = models.CharField(max_length=255, default='')
     job_type = models.CharField(max_length=20, choices=JOB_TYPE_CHOICES, default='Full Time')
     rate = MoneyField(max_digits=14, decimal_places=2, default_currency='USD', default='20')
     nationality = CountryField( null=True, blank=True) 
+    # facebook = models.CharField(max_length=140, null=True, blank=True, default='https://facebook.com')
+    # twitter = models.CharField(max_length=140, null=True, blank=True, default='https://twitter.com')
 
     follows = models.ManyToManyField(
         "self",
@@ -49,6 +51,12 @@ class Profile(models.Model):
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.avatar.path)
+
+        cover_img = Image.open(self.cover_image.path)
+        if cover_img.size or cover_img.width > 500:
+            output_size = (1200, 500)
+            cover_img.thumbnail(output_size)
+            cover_img.save(self.cover_image.path)
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):

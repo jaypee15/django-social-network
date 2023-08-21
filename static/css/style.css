@@ -2587,6 +2587,7 @@ footer {
 
 .cover-sec img {
 	width: 100%;
+	height: 250px;
 }
 .cover-sec > a {
 	display: inline-block;
